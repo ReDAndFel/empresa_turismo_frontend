@@ -1,34 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css"
+import { Route, Routes, Link } from "react-router-dom"
+import RoomReservation from "./components/RoomReservation/RoomReservation"
+import CarReservation from "./components/CarReservation/CarReservation"
+import PurchaseItem from "./components/PurchaseItem/PurchaseItem"
+import PurchaseTouristPackage from "./components/PurchaseTouristPackage/PurchaseTouristPackage"
+import PurchaseTouristPackageCancellation from "./components/PurchaseTouristPackageCancellation/PurchaseTouristPackageCancellation"
+import RoomReservationCancellation from "./components/RoomReservationCancellation/RoomReservationCancellation"
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="main_container">
+      <nav className="nav_aside">
+        <Link to="/Reservacion_de_habitacion">Reservacion de habitacion</Link>
+        <Link to="/Reservacion_de_carro">Reservacion de carro</Link>
+        <Link to="/Compra_de_articulo">Compra articulo</Link>
+        <Link to="/Compra_paquete_turistico">Compra paquete turistico</Link>
+        <Link to="/Cancelacion_paquete_turistico">Cancelacion paquete turistico</Link>
+        <Link to="/Cancelacion_reserva_habitacion">Cancelacion reserva habitacion</Link>
+      </nav>
+      <Routes className='routes_container'>
+        <Route path='/' element={<RoomReservation />} />
+        <Route path='/Reservacion_de_habitacion' element={<RoomReservation />} />
+        <Route path='/Reservacion_de_carro' element={<CarReservation />} />
+        <Route path='/Compra_de_articulo' element={<PurchaseItem />} />
+        <Route path='/Compra_paquete_turistico' element={<PurchaseTouristPackage />} />
+        <Route path='/Cancelacion_paquete_turistico' element={<PurchaseTouristPackageCancellation />} />
+        <Route path='/Cancelacion_reserva_habitacion' element={<RoomReservationCancellation />} />
+      </Routes>
+    </div>
   )
 }
 
