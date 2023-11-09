@@ -17,12 +17,6 @@ export const useRoomTransaction = () => {
         roomReservationDetail: []
     }
 
-    const roomReservationDetailDTO = {
-        idHabitacion: 0,
-        cantidad: 0,
-        valor: 0,
-    }
-
     const [roomReservation, setRoomReservation] = useState(roomReservationDTO)
 
 
@@ -73,7 +67,7 @@ export const useRoomTransaction = () => {
         const newDetail = {
             idHabitacion,
             precioNoche,
-            cantidad: 1,
+            unidades: 1,
             precio: precioNoche,
         };
 
@@ -97,11 +91,9 @@ export const useRoomTransaction = () => {
 
         const updatedAuxDetails = auxDetailRoomReservation.map(detail => {
             if (detail.idHabitacion === roomId) {
-                const cantidad = newUnits[roomId];
-                console.log("cantidad es " + cantidad)
-                const precio = cantidad * detail.precioNoche
-                console.log("precio es " + precio)
-                return { ...detail, cantidad, precio }
+                const unidades = newUnits[roomId];
+                const precio = unidades * detail.precioNoche
+                return { ...detail, unidades, precio }
             }
             return detail;
         });

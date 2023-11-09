@@ -19,8 +19,7 @@ const RoomReservation = () => {
     const { agencyList } = useAgency()
     const [valorTotal, setValorTotal] = useState(0)
     const { roomList } = useRoom()
-    const { auxDetailRoomReservation, unitsRoom, handleUnitsDetail, setAuxDetailRoomReservation, roomReservation, addDetail, removeDetail, createReservation, roomReservationList } = useRoomTransaction()
-
+    const { auxDetailRoomReservation, handleUnitsDetail, setAuxDetailRoomReservation, roomReservation, addDetail, removeDetail, createReservation, roomReservationList } = useRoomTransaction()
     const { form, handleChange, cleanForm} = useForm(roomReservation)
 
     const handleSubmit = (e) => {
@@ -51,7 +50,7 @@ const RoomReservation = () => {
             return accumulator + (item.precio);
         }, 0);
         setValorTotal(total);
-    }, [auxDetailRoomReservation]);
+    }, [auxDetailRoomReservation])
 
     return (
         <div className="room_reservation_container">
@@ -120,7 +119,7 @@ const RoomReservation = () => {
                                 <Row key={item.idHabitacion}>
                                     <span>ID Habitacion: {item.idHabitacion}</span>
                                     <span>Precio: {item.precio} </span>
-                                    <span>Cantidad: <input type="number" value={item.cantidad} onChange={(e) => handleUnitsRoom(e, item.idHabitacion)} /></span>
+                                    <span>Unidades: <input type="number" value={item.unidades} onChange={(e) => handleUnitsRoom(e, item.idHabitacion)} /></span>
                                     <Button handleClick={() => handleClickRemoveDetail(item)}>Quitar de reserva</Button>
                                 </Row>
                             ))}

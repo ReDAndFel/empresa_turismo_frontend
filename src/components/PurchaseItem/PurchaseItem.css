@@ -1,0 +1,28 @@
+.item_transaction_container{
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    width: 100vw;
+    max-height: 100vh;
+    overflow-y: scroll;
+}
+
+.list_transaction{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+.list_menu_container{
+    display: flex;
+    gap: 1em;
+}
+.list_menu{
+    background-color: var(--secundary_background_color);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    border-radius: 0.3em; 
+    width: 100%;   
+}
