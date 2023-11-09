@@ -1,0 +1,12 @@
+.combo_box{
+    border: 1px solid var(--primary_color);
+    width: 100%;    
+}
+
+.combo_box:focus{
+    outline: none;   
+}
+
+.combo_box:hover{   
+    cursor: pointer;
+} 

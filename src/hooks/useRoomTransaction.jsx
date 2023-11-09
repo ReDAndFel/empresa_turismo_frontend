@@ -1,6 +1,8 @@
 import { useState } from "react"
 
 export const useRoomTransaction = () => {
+    const [unitsRoom, setUnitsRoom] = useState({})
+
 
     const roomReservationDTO = {
         idReserva: 0,
@@ -10,12 +12,19 @@ export const useRoomTransaction = () => {
         idEstadoReserva: 0,
         fechaInicio: "",
         fechaFinal: "",
-        estado:true,
-        valorTotal:0
+        estado: true,
+        valorTotal: 0,
+        roomReservationDetail: []
+    }
+
+    const roomReservationDetailDTO = {
+        idHabitacion: 0,
+        cantidad: 0,
+        valor: 0,
     }
 
     const [roomReservation, setRoomReservation] = useState(roomReservationDTO)
-    
+
 
     const [roomReservationList, setRoomReservationList] = useState([
         {
@@ -26,8 +35,8 @@ export const useRoomTransaction = () => {
             idEstadoReserva: 1,
             fechaInicio: "2023-10-22",
             fechaFinal: "2023-10-23",
-            estado:true,
-            valorTotal:10
+            estado: true,
+            valorTotal: 10
         },
         {
             idReserva: 2,
@@ -37,8 +46,8 @@ export const useRoomTransaction = () => {
             idEstadoReserva: 1,
             fechaInicio: "2023-11-22",
             fechaFinal: "2023-11-23",
-            estado:true,
-            valorTotal:20
+            estado: true,
+            valorTotal: 20
         },
         {
             idReserva: 3,
@@ -48,8 +57,8 @@ export const useRoomTransaction = () => {
             idEstadoReserva: 1,
             fechaInicio: "2023-11-24",
             fechaFinal: "2023-11-25",
-            estado:true,
-            valorTotal:20
+            estado: true,
+            valorTotal: 20
         }
 
     ])
@@ -58,5 +67,49 @@ export const useRoomTransaction = () => {
 
     const [detailRoomReservation, setDetailRoomReservation] = useState([])
 
-    return { roomReservationList, auxDetailRoomReservation, detailRoomReservation }
+    const addDetail = (item) => {
+        const { idHabitacion, precioNoche } = item;
+
+        const newDetail = {
+            idHabitacion,
+            precioNoche,
+            cantidad: 1,
+            precio: precioNoche,
+        };
+
+        const listAux = [...auxDetailRoomReservation];
+        !listAux.some(detail => detail.idHabitacion === newDetail.idHabitacion) && setAuxDetailRoomReservation([...listAux, newDetail]);
+    }
+
+    const removeDetail = (item) => {
+        const listAux = auxDetailRoomReservation.filter((itemAux) => itemAux !== item)
+        setAuxDetailRoomReservation(listAux)
+    }
+
+    const createReservation = (form) => {
+        alert("Reserva creada")
+        console.log(form)
+    }
+
+    const handleUnitsDetail = (units, roomId) => {
+        const newUnits = { ...unitsRoom };
+        newUnits[roomId] = units;
+
+        const updatedAuxDetails = auxDetailRoomReservation.map(detail => {
+            if (detail.idHabitacion === roomId) {
+                const cantidad = newUnits[roomId];
+                console.log("cantidad es " + cantidad)
+                const precio = cantidad * detail.precioNoche
+                console.log("precio es " + precio)
+                return { ...detail, cantidad, precio }
+            }
+            return detail;
+        });
+
+        setUnitsRoom(newUnits);
+        setAuxDetailRoomReservation(updatedAuxDetails)
+
+    }
+
+    return { roomReservationList, roomReservation, auxDetailRoomReservation,unitsRoom, setAuxDetailRoomReservation,handleUnitsDetail, addDetail, removeDetail, createReservation, detailRoomReservation }
 }

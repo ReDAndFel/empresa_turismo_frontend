@@ -6,7 +6,6 @@ export const useForm = (initialForm) =>{
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm({ ...form, [name]: value });
-        setErrors(validationsForm(form));
     }
 
     const cleanForm = () => {

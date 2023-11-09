@@ -1,6 +1,7 @@
-const ComboBox = ({ children }) => {
+import "./ComboBox.css"
+const ComboBox = ({ children, name, selectedValue, onChange }) => {
     return (
-        <select className="combo_box">
+        <select className="combo_box" name={name} value={selectedValue} onChange={onChange}>
             {children}
         </select>
     )

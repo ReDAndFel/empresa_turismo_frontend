@@ -3,8 +3,9 @@ import List from "../List/List"
 import Button from "../Button/Button"
 import SubmitButton from "../SubmitButton/SubmitButton"
 import ComboBox from "../ComboBox/ComboBox"
+import Row from "../Row/Row"
 import "./RoomReservation.css"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "../../hooks/useForm"
 import { useRegime } from "../../hooks/useRegime"
 import { useClient } from "../../hooks/useClient"
@@ -18,22 +19,39 @@ const RoomReservation = () => {
     const { agencyList } = useAgency()
     const [valorTotal, setValorTotal] = useState(0)
     const { roomList } = useRoom()
-    const { auxDetailRoomReservation, roomReservationList } = useRoomTransaction()
+    const { auxDetailRoomReservation, unitsRoom, handleUnitsDetail, setAuxDetailRoomReservation, roomReservation, addDetail, removeDetail, createReservation, roomReservationList } = useRoomTransaction()
 
-    const { form } = useForm()
+    const { form, handleChange, cleanForm} = useForm(roomReservation)
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        alert("reserva realizada")
+        form.roomReservationDetail = auxDetailRoomReservation
+        form.valorTotal = valorTotal
+        createReservation(form)
+        cleanForm()
+        setAuxDetailRoomReservation([])
+        setValorTotal(0)
     }
 
-    const handleClickAddReservation = () => {
-
+    const handleClickAddDetail = (item) => {
+        addDetail(item)
     }
 
-    const handleClickRemoveReservation = () => {
-
+    const handleClickRemoveDetail = (item) => {
+        removeDetail(item)
     }
+
+    const handleUnitsRoom = (e, roomId) => {
+        const units = parseInt(e.target.value)
+        handleUnitsDetail(units, roomId)
+    }
+
+    useEffect(() => {
+        const total = auxDetailRoomReservation.reduce((accumulator, item) => {
+            return accumulator + (item.precio);
+        }, 0);
+        setValorTotal(total);
+    }, [auxDetailRoomReservation]);
 
     return (
         <div className="room_reservation_container">
@@ -41,88 +59,93 @@ const RoomReservation = () => {
             <Form handleSubmit={handleSubmit}>
                 <div className="text_field_container">
                     <label>Cliente:</label>
-                    <ComboBox>
+                    <ComboBox name="idCliente" selectedValue={form.idCliente} onChange={handleChange}>
+                        <option className="option_combo_box" value="">Seleccione un cliente</option>
                         {clientList.map((item) => (
-                            <option value={item.idCliente}>{item.idCliente}{item.nombre}{item.apellido}</option>
+                            <option key={item.idCliente} className="option_combo_box" value={item.idCliente}>
+                                {item.idCliente} {item.nombre}  {item.apellido}
+                            </option>
                         ))}
                     </ComboBox>
 
                 </div>
                 <div className="text_field_container">
                     <label>Regimen:</label>
-                    <ComboBox>
+                    <ComboBox name="idRegimen" selectedValue={form.idRegimen} onChange={handleChange}>
+                        <option className="option_combo_box" value="">Seleccione un regimen</option>
                         {regimeList.map((item) => (
-                            <option value={item.idRegimen}>{item.descripcion}</option>
+                            <option key={item.idRegimen} className="option_combo_box" value={item.idRegimen}>{item.descripcion}</option>
                         ))}
                     </ComboBox>
 
                 </div>
                 <div className="text_field_container">
                     <label>Agencia:</label>
-                    <ComboBox>
+                    <ComboBox name="idAgencia" selectedValue={form.idAgencia} onChange={handleChange}>
+                        <option className="option_combo_box" value="">Seleccione una agencia</option>
                         {agencyList.map((item) => (
-                            <option value={item.idAgencia}>{item.nombre}</option>
+                            <option key={item.idAgencia} className="option_combo_box" value={item.idAgencia}>{item.nombre}</option>
                         ))}
                     </ComboBox>
 
                 </div>
                 <div className="text_field_container">
                     <label>Fecha inicio:</label>
-                    <input type="date" />
+                    <input className="text_field" type="date" name="fechaInicio" value={form.fechaInicio} onChange={handleChange} />
                 </div>
                 <div className="text_field_container">
                     <label>Fecha final:</label>
-                    <input type="date" />
+                    <input className="text_field" type="date" name="fechaFinal" value={form.fechaFinal} onChange={handleChange} />
                 </div>
                 <div className="list_menu_container">
                     <div className="list_menu">
-                        <span>Habitaciones</span>
-                        <List>
+                        <h3>Habitaciones</h3>
+                        <List maxHeight={300}>
                             {roomList.map((item) => (
-                                <div className="item_list">
-                                    {item.idHotel}
-                                    {item.idNivel}
-                                    {item.cantidad}
-                                    {item.precioNoche}
-                                    <Button handleClick={handleClickAddReservation}>Agregar a reserva</Button>
-                                </div>
+                                <Row key={item.idHabitacion}>
+                                    <span>ID Habitacion: {item.idHabitacion}</span>
+                                    <span>ID Hotel: {item.idHotel}</span>
+                                    <span>ID Nivel: {item.idNivel}</span>
+                                    <span>Cantidad: {item.cantidad}</span>
+                                    <span>Precio: ${item.precioNoche}</span>
+                                    <Button handleClick={() => handleClickAddDetail(item)}>Agregar a reserva</Button>
+                                </Row>
                             ))}
                         </List>
                     </div>
                     <div className="list_menu">
-                        <span>Habitaciones a reservar</span>
-                        <List>
+                        <h3>Habitaciones a reservar</h3>
+                        <List maxHeight={500}>
                             {auxDetailRoomReservation.map((item) => (
-                                <div className="item_list">
-                                    {item.idHotel}
-                                    {item.idNivel}
-                                    {item.cantidad}
-                                    {item.precioNoche}
-                                    <Button handleClick={handleClickRemoveReservation}>Quitar de reserva</Button>
-                                </div>
+                                <Row key={item.idHabitacion}>
+                                    <span>ID Habitacion: {item.idHabitacion}</span>
+                                    <span>Precio: {item.precio} </span>
+                                    <span>Cantidad: <input type="number" value={item.cantidad} onChange={(e) => handleUnitsRoom(e, item.idHabitacion)} /></span>
+                                    <Button handleClick={() => handleClickRemoveDetail(item)}>Quitar de reserva</Button>
+                                </Row>
                             ))}
                         </List>
                     </div>
                 </div>
-                <label className="total_price">$ {valorTotal}</label>
+                <label className="total_price">Valor Total: ${valorTotal}</label>
                 <SubmitButton>Reservar</SubmitButton>
             </Form>
             <div className="list_reservation">
-                <span>Reservas</span>
-                <List>
+                <h3>Reservas</h3>
+                <List maxHeight={500}>
                     {roomReservationList.map((item) => (
-                        <div className="item_list">
-                            {item.idCliente}
-                            {item.fechaInicio}
-                            {item.fechaFinal}
-                            {item.valorTotal}
-                            {item.idEstadoReserva}
-                        </div>
+                        <Row key={item.idReserva}>
+                            <span>ID Cliente: {item.idCliente}</span>
+                            <span>Fecha Inicio: {item.fechaInicio}</span>
+                            <span>Fecha final: {item.fechaFinal}</span>
+                            <span>Valor total: ${item.valorTotal}</span>
+                            <span>ID Estado: {item.idEstadoReserva}</span>
+                        </Row>
                     ))}
                 </List>
-            </div>
+            </div >
 
-        </div>
+        </div >
 
 
     )

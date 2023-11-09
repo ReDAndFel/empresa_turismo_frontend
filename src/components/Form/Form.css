@@ -1,0 +1,17 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 100%;
+}
+
+.form label{
+    font-weight: bold;
+}
+
+.form .text_field{
+    border: 1px solid var(--primary_color);
+    width: 100%;
+    font-size: 1.2em;
+}
+

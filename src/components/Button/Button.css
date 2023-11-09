@@ -1,0 +1,13 @@
+button{
+    border: 1px solid var(--secundary_color);
+    background-color: var(--primary_color);    
+    border-radius: 0.3em;
+    min-height: 2.5em;
+    font-weight: 600;
+    max-width: 20em;
+    justify-self: center;
+}
+button:hover{
+    background-color: var(--secundary_color);
+    cursor: pointer;
+}
