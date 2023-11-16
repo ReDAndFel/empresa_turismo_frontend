@@ -16,13 +16,22 @@ export const useTouristPackageTransaction = () => {
         purchaseTouristPackageDetail: []
     }
 
+    const cancelPurchaseTouristPackageDTO = {
+        idCompraPaquete: 0,
+        fecha: "",
+        estado: true,
+        valor:0,
+        motivo: ""
+    }
+
     const [purchaseTouristPackage, setPurchaseTouristPackage] = useState(purchaseTouristPackageDTO)
+    const [cancelPurchaseTouristPackage, setCancelPurchaseTouristPackage] = useState(cancelPurchaseTouristPackageDTO)
     const [purchaseTouristPackageList, setPurchaseTouristPackageList] = useState([
         {
             idCompra: 1,
             idCliente: 1,
             idAgencia: 1,
-            idEstadoCompra: 1,
+            idEstadoCompra: 2,
             valorTotal: 200,
             fechaCompra: "2023-01-20",
             fechaRequerida: "2023-10-22",
@@ -37,6 +46,16 @@ export const useTouristPackageTransaction = () => {
             fechaCompra: "2023-02-24",
             fechaRequerida: "2023-12-25",
             estado: true
+        }
+    ])
+
+    const [cancelPurchaseTouristPackageList, setCancelPurchaseTouristPackageList] = useState([
+        {
+            idCompraPaquete: 1,
+            fecha: "2023-04-15",
+            estado: true,
+            costo:0,
+            motivo: "Ya no quiero el paquete."
         }
     ])
 
@@ -70,6 +89,11 @@ export const useTouristPackageTransaction = () => {
         console.log(form)
     }
 
+    const cancelPurchase = (form) => {
+        alert("Compra de Paquete turistico Cancelada")
+        console.log(form)
+    }
+
     const handleUnitsDetail = (units, packageId) => {
         const newUnits = { ...unitsPackage };
         newUnits[packageId] = units;
@@ -89,5 +113,5 @@ export const useTouristPackageTransaction = () => {
 
     }
 
-    return { purchaseTouristPackage, purchaseTouristPackageList, auxDetailPackageTransaction, setAuxDetailPackageTransaction, addDetail, removeDetail, createPurchase, handleUnitsDetail }
+    return { purchaseTouristPackage, purchaseTouristPackageList,cancelPurchaseTouristPackageList, cancelPurchase,cancelPurchaseTouristPackage, auxDetailPackageTransaction, setAuxDetailPackageTransaction, addDetail, removeDetail, createPurchase, cancelPurchase, handleUnitsDetail }
 }

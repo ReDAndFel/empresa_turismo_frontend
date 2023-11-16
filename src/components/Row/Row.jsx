@@ -1,8 +1,10 @@
 import "./Row.css"
-const Row = ({children}) =>{
-    return(
+const Row = ({ children }) => {
+    return (
         <div className="row_container">
-            {children}
+            <div className="row_children_container">
+                {children}
+            </div>
         </div>
     )
 }

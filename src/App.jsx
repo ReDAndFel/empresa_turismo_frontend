@@ -4,8 +4,8 @@ import RoomReservation from "./components/RoomReservation/RoomReservation"
 import CarReservation from "./components/CarReservation/CarReservation"
 import PurchaseItem from "./components/PurchaseItem/PurchaseItem"
 import PurchaseTouristPackage from "./components/PurchaseTouristPackage/PurchaseTouristPackage"
-import PurchaseTouristPackageCancellation from "./components/PurchaseTouristPackageCancellation/PurchaseTouristPackageCancellation"
-import RoomReservationCancellation from "./components/RoomReservationCancellation/RoomReservationCancellation"
+import CancelRoomReservation from "./components/CancelRoomReservation/CancelRoomReservation"
+import CancelPackageTouristPurchase from "./components/CancelPackageTouristPurchase/CancelPackageTouristPurchase"
 
 function App() {
 
@@ -25,8 +25,8 @@ function App() {
         <Route path='/Reservacion_de_carro' element={<CarReservation />} />
         <Route path='/Compra_de_articulo' element={<PurchaseItem />} />
         <Route path='/Compra_paquete_turistico' element={<PurchaseTouristPackage />} />
-        <Route path='/Cancelacion_paquete_turistico' element={<PurchaseTouristPackageCancellation />} />
-        <Route path='/Cancelacion_reserva_habitacion' element={<RoomReservationCancellation />} />
+        <Route path='/Cancelacion_paquete_turistico' element={<CancelPackageTouristPurchase />} />
+        <Route path='/Cancelacion_reserva_habitacion' element={<CancelRoomReservation />} />
       </Routes>
     </div>
   )

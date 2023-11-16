@@ -1,0 +1,15 @@
+.cancel_purchase_tourist_package_container{
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    width: 100vw;
+    max-height: 100vh;
+    overflow-y: scroll;
+}
+
+.list_purchase_tourist_package, .list_cancel_purchase_tourist_package{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}

@@ -17,8 +17,27 @@ export const useRoomTransaction = () => {
         roomReservationDetail: []
     }
 
+    const cancelRoomReservationDTO = {
+        idReservaHabitacion: 0,        
+        fecha: "",
+        estado: true,
+        costo: 0,
+        motivo:""
+    }
+
     const [roomReservation, setRoomReservation] = useState(roomReservationDTO)
 
+    const [cancelRoomReservation, setCancelRoomReservation] = useState(cancelRoomReservationDTO)
+
+    const [cancelRoomReservationList, setCancelRoomReservationList] = useState([
+        {
+            idReservaHabitacion: 1,            
+            fecha: "2023-11-24",
+            estado: true,
+            costo: 10,
+            motivo:'Se cancelaron mis planes y ya no debo quedarme.'
+        }
+    ])
 
     const [roomReservationList, setRoomReservationList] = useState([
         {
@@ -26,7 +45,7 @@ export const useRoomTransaction = () => {
             idCliente: 1,
             idRegimen: 1,
             idAgencia: 1,
-            idEstadoReserva: 1,
+            idEstadoReserva: 2,
             fechaInicio: "2023-10-22",
             fechaFinal: "2023-10-23",
             estado: true,
@@ -85,6 +104,11 @@ export const useRoomTransaction = () => {
         console.log(form)
     }
 
+    const cancelReservation = (form) => {
+        alert("Reserva Cancelada")
+        console.log(form)
+    }
+
     const handleUnitsDetail = (units, roomId) => {
         const newUnits = { ...unitsRoom };
         newUnits[roomId] = units;
@@ -103,5 +127,5 @@ export const useRoomTransaction = () => {
 
     }
 
-    return { roomReservationList, roomReservation, auxDetailRoomReservation,unitsRoom, setAuxDetailRoomReservation,handleUnitsDetail, addDetail, removeDetail, createReservation, detailRoomReservation }
+    return { roomReservationList, roomReservation, auxDetailRoomReservation,unitsRoom,cancelRoomReservation, cancelRoomReservationList,setAuxDetailRoomReservation,handleUnitsDetail, addDetail, removeDetail, createReservation,cancelReservation, detailRoomReservation }
 }

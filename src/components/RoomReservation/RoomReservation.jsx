@@ -12,6 +12,7 @@ import { useClient } from "../../hooks/useClient"
 import { useAgency } from "../../hooks/useAgency"
 import { useRoom } from "../../hooks/useRoom"
 import { useRoomTransaction } from "../../hooks/useRoomTransaction"
+import Modal from "../Modal/Modal"
 const RoomReservation = () => {
 
     const { clientList } = useClient()
@@ -21,6 +22,18 @@ const RoomReservation = () => {
     const { roomList } = useRoom()
     const { auxDetailRoomReservation, handleUnitsDetail, setAuxDetailRoomReservation, roomReservation, addDetail, removeDetail, createReservation, roomReservationList } = useRoomTransaction()
     const { form, handleChange, cleanForm} = useForm(roomReservation)
+    const [selectedItem, setSelectedItem] = useState()
+    const [stateItemModal, setStateItemModal] = useState(false)
+
+    const handleClose = () => {
+        setStateItemModal(false)
+    }
+
+    const handleClickItem = (item) => {
+        setStateItemModal(true)
+        setSelectedItem(item)
+    }
+
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -107,6 +120,7 @@ const RoomReservation = () => {
                                     <span>ID Nivel: {item.idNivel}</span>
                                     <span>Cantidad: {item.cantidad}</span>
                                     <span>Precio: ${item.precioNoche}</span>
+                                    <Button handleClick={() => handleClickItem(item)}>Ver Info</Button>
                                     <Button handleClick={() => handleClickAddDetail(item)}>Agregar a reserva</Button>
                                 </Row>
                             ))}
@@ -120,6 +134,7 @@ const RoomReservation = () => {
                                     <span>ID Habitacion: {item.idHabitacion}</span>
                                     <span>Precio: {item.precio} </span>
                                     <span>Unidades: <input type="number" value={item.unidades} onChange={(e) => handleUnitsRoom(e, item.idHabitacion)} /></span>
+                                    <Button handleClick={() => handleClickItem(item)}>Ver Info</Button>
                                     <Button handleClick={() => handleClickRemoveDetail(item)}>Quitar de reserva</Button>
                                 </Row>
                             ))}
@@ -134,16 +149,23 @@ const RoomReservation = () => {
                 <List maxHeight={500}>
                     {roomReservationList.map((item) => (
                         <Row key={item.idReserva}>
+                            <span>ID Reserva: {item.idReserva}</span>
                             <span>ID Cliente: {item.idCliente}</span>
                             <span>Fecha Inicio: {item.fechaInicio}</span>
                             <span>Fecha final: {item.fechaFinal}</span>
                             <span>Valor total: ${item.valorTotal}</span>
-                            <span>ID Estado: {item.idEstadoReserva}</span>
+                            <Button handleClick={() => handleClickItem(item)}>Ver Info</Button>
                         </Row>
                     ))}
                 </List>
             </div >
-
+            <Modal title={"Informacion"} state={stateItemModal} setState={setStateItemModal} handleClose={handleClose}>
+                {selectedItem && Object.entries(selectedItem).map(([key, value]) => (
+                    <p key={key}>
+                        {key}: {value.toString()}
+                    </p>
+                ))}
+            </Modal>
         </div >
 
 

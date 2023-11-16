@@ -11,6 +11,7 @@ import List from "../List/List"
 import Row from "../Row/Row"
 import Button from "../Button/Button"
 import SubmitButton from "../SubmitButton/SubmitButton"
+import Modal from "../Modal/Modal"
 
 const PurchaseTouristPackage = () => {
     const { clientList } = useClient()
@@ -19,6 +20,18 @@ const PurchaseTouristPackage = () => {
     const { touristPackageList } = useTouristPackage()
     const { purchaseTouristPackage, purchaseTouristPackageList, auxDetailPackageTransaction, setAuxDetailPackageTransaction, addDetail, removeDetail, createPurchase, handleUnitsDetail } = useTouristPackageTransaction()
     const { form, handleChange, cleanForm } = useForm(purchaseTouristPackage)
+    const [selectedItem, setSelectedItem] = useState()
+    const [stateItemModal, setStateItemModal] = useState(false)
+
+    const handleClose = () => {
+        setStateItemModal(false)
+    }
+
+    const handleClickItem = (item) => {
+        setStateItemModal(true)
+        setSelectedItem(item)
+    }
+
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -89,6 +102,7 @@ const PurchaseTouristPackage = () => {
                                     <span>ID Paquete: {item.idPaquete}</span>
                                     <span>Nombre: {item.nombre}</span>
                                     <span>Precio: {item.precio}</span>
+                                    <Button handleClick={() => handleClickItem(item)}>Ver Info</Button>
                                     <Button handleClick={() => handleClickAddDetail(item)}>Agregar a compra</Button>
                                 </Row>
                             ))}
@@ -103,6 +117,7 @@ const PurchaseTouristPackage = () => {
                                     <span>Nombre: {item.nombre}</span>
                                     <span>Precio: {item.precioDetalle}</span>
                                     <span>Unidades: <input type="number" value={item.unidades} onChange={(e) => handleUnitsTouristPackage(e, item.idPaquete)} /></span>
+                                    <Button handleClick={() => handleClickItem(item)}>Ver Info</Button>
                                     <Button handleClick={() => handleClickRemoveDetail(item)}>Quitar de compra</Button>
                                 </Row>
                             ))}
@@ -122,11 +137,18 @@ const PurchaseTouristPackage = () => {
                             <span>Fecha Compra: {item.fechaCompra}</span>
                             <span>Fecha Requerida: {item.fechaRequerida}</span>
                             <span>Valor total: ${item.valorTotal}</span>
-                            <span>ID Estado: {item.idEstadoCompra}</span>
+                            <Button handleClick={() => handleClickItem(item)}>Ver Info</Button>
                         </Row>
                     ))}
                 </List>
             </div >
+            <Modal title={"Informacion"} state={stateItemModal} setState={setStateItemModal} handleClose={handleClose}>
+                {selectedItem && Object.entries(selectedItem).map(([key, value]) => (
+                    <p key={key}>
+                        {key}: {value.toString()}
+                    </p>
+                ))}
+            </Modal>
         </div>
     )
 }

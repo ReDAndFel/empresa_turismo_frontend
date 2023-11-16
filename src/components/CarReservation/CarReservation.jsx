@@ -11,6 +11,7 @@ import List from "../List/List"
 import Row from "../Row/Row"
 import Button from "../Button/Button"
 import SubmitButton from "../SubmitButton/SubmitButton"
+import Modal from "../Modal/Modal"
 
 const CarReservation = () => {
     const { clientList } = useClient()
@@ -19,6 +20,18 @@ const CarReservation = () => {
     const { carList } = useCar()
     const { auxDetailCarReservation, handleDetail, setAuxDetailCarReservation, carReservation, addDetail, removeDetail, createReservation, carReservationList } = useCarTransaction()
     const { form, handleChange, cleanForm } = useForm(carReservation)
+    const [selectedItem, setSelectedItem] = useState()
+    const [stateItemModal, setStateItemModal] = useState(false)
+
+    const handleClose = () => {
+        setStateItemModal(false)
+    }
+
+    const handleClickItem = (item) => {
+        setStateItemModal(true)
+        setSelectedItem(item)
+    }
+
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -94,6 +107,7 @@ const CarReservation = () => {
                                     <span>ID Marca: {item.idMarca}</span>
                                     <span>Placa: {item.placa}</span>
                                     <span>Precio: ${item.precio}</span>
+                                    <Button handleClick={() => handleClickItem(item)}>Ver Info</Button>
                                     <Button handleClick={() => handleClickAddDetail(item)}>Agregar a reserva</Button>
                                 </Row>
                             ))}
@@ -109,6 +123,7 @@ const CarReservation = () => {
                                     <span>GPS: <input type="checkbox" name="gps" checked={item.gps} onChange={(event) => handleReservationDetail(event, item.idAutomovil)} /></span>
                                     <span>Seguro: <input type="checkbox" name="seguro" checked={item.seguro} onChange={(event) => handleReservationDetail(event, item.idAutomovil)} /></span>
                                     <span>Unidades: <input type="number" name="unidades" value={item.unidades} onChange={(event) => handleReservationDetail(event, item.idAutomovil)} /></span>
+                                    <Button handleClick={() => handleClickItem(item)}>Ver Info</Button>
                                     <Button handleClick={() => handleClickRemoveDetail(item)}>Quitar de reserva</Button>
                                 </Row>
                             ))}
@@ -123,14 +138,23 @@ const CarReservation = () => {
                 <List maxHeight={500}>
                     {carReservationList.map((item) => (
                         <Row key={item.idReserva}>
+                            <span>ID Reserva: {item.idReserva}</span>
                             <span>ID Cliente: {item.idCliente}</span>
                             <span>Fecha Inicio: {item.fechaInicio}</span>
                             <span>Fecha final: {item.fechaFinal}</span>
                             <span>Valor total: ${item.valorTotal}</span>
+                            <Button handleClick={() => handleClickItem(item)}>Ver Info</Button>
                         </Row>
                     ))}
                 </List>
             </div >
+            <Modal title={"Informacion"} state={stateItemModal} setState={setStateItemModal} handleClose={handleClose}>
+                {selectedItem && Object.entries(selectedItem).map(([key, value]) => (
+                    <p key={key}>
+                        {key}: {value.toString()}
+                    </p>
+                ))}
+            </Modal>
         </div>
     );
 }
